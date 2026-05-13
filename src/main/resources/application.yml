@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: otel-demo
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+  otlp:
+    tracing:
+      endpoint: "http://localhost:4318/v1/traces"
+    metrics:
+      export:
+        url: "http://localhost:4318/v1/metrics"
+        step: 10s
+  endpoints:
+    web:
+      exposure:
+        include: "health,info,metrics,prometheus"
+
+logging:
+  pattern:
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+  level:
+    root: INFO
+    io.opentelemetry: INFO
+    org.springframework.web.servlet.DispatcherServlet: DEBUG
